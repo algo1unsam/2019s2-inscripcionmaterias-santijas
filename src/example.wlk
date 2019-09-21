@@ -3,17 +3,15 @@ class Alumno {
 	var property nombre
 	var property creditos
 	var property inscripcion
-	const property carrerasEstudiadas = []
-	const property materiasAprobadas = []
+	const carrerasEstudiadas = []
+	const materiasAprobadas = []
 
 	method puedeCursar(materia) {
-		if (self.carreraContieneMateria(materia) and (not(self.aproboMateria(materia)))) {
-			return "hola"
-		}else return false
-		
-	}
+		return self.carreraContieneMateria(materia) and (not(self.aproboMateria(materia))) 
+			and materia.cumpleRequisito(self) and inscripcion.estaInscripto(materia)
+		 }
 	
-	method carreraContieneMateria(materia){ return carrerasEstudiadas.any().contains(materia)	}
+	method carreraContieneMateria(materia){ return carrerasEstudiadas.contains(materia)	}//agregar carrera
 	
 	method aproboMateria(materia) {
 		return materiasAprobadas.contains(materia)
@@ -30,17 +28,17 @@ class Alumno {
 class Materia {
 	var property requisito
 	
-	method cumpleRequisito(alumno){ return requisito.cumpleRequisito(alumno)}
+	method cumpleRequisito(alumno) = requisito.cumpleRequisito(alumno)
 
 }
 
-object creditos{
+class Credito{
 	var property credito = 0
 	
 	method cumpleRequisito(alumno){ return (alumno.creditos() >= credito)}
 }
 
-object correlativas{
+class Correlativa{
 	const listaDeCorrelativas = []
 	method cumpleRequisito(alumno) {
 		return listaDeCorrelativas.all({ materia => alumno.materiasAprobadas().contains(materia)})   
@@ -48,13 +46,13 @@ object correlativas{
 	}
 }
 
-object porAnio{
+class porAnio{
 	method cumpleRequisito(alumno){  }
 	
 }
 
 object nada{
-	
+	method cumpleRequisito(alumno){ return true }
 }
 
 class Carrera {
