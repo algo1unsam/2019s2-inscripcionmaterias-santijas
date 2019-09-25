@@ -1,0 +1,19 @@
+import example.*
+
+describe "Bateria de Tests" {
+		const santi = new Alumno(nombre = "Santiago" ,creditos = 0)
+		const sociales = new Materia()
+		const ingenieria = new Carrera()
+		
+		
+		
+		fixture{
+		santi.carrerasEstudiadas().add(ingenieria)
+		ingenieria.materiasDeCarrera().add(sociales)
+	}
+	
+	test "Tests" {
+	assert.that(santi.puedeCursar(sociales))
+		
+	}
+}
